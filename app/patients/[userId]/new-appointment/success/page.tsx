@@ -24,7 +24,7 @@ const Success = async ({
       <div className="success-img">
         <Link href={"/"}>
           <Image
-            src="/assets/icons/logo-full.svg"
+            src="/assets/icons/CareBuddy-full-logo.svg"
             height={1000}
             width={1000}
             alt="logo"

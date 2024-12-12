@@ -16,7 +16,7 @@ const Registration = async ({ params: { userId } }: SearchParamProps) => {
       <section className="remove-scrollbar container flex-1 flex-col py-10">
         <div className="sub-container max-w-[860px]">
           <Image
-            src="/assets/icons/logo-full.svg"
+            src="/assets/icons/CareBuddy-full-logo.svg"
             height={1000}
             width={1000}
             alt="logo"
@@ -26,7 +26,7 @@ const Registration = async ({ params: { userId } }: SearchParamProps) => {
           <RegisterForm user={user} />
 
           <p className="copyright py-12">
-            © 2024 CarePulse
+            © 2024 CareBuddy+
           </p>
         </div>
       </section>
