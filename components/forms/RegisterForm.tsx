@@ -26,10 +26,21 @@ import "react-phone-number-input/style.css";
 import { FileUploader } from "../FileUploader";
 import SubmitButton from "../SubmitButton";
 import { FormFieldType } from "./PatientForm";
+import Link from "next/link";
+import useIotaQueryKyc from "@/lib/hooks/useIotaQueryKYC";
+import { idvQueryId, iotaConfigId, personalInformationQueryId } from "@/lib/variables";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const {
+    isInitializing,
+    isWaitingForResponse,
+    handleInitiate,
+    errorMessage,
+    data: iotaRequestData,
+    dataRequest,
+  } = useIotaQueryKyc({ configurationId: iotaConfigId });
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
@@ -40,6 +51,12 @@ const RegisterForm = ({ user }: { user: User }) => {
       phone: user.phone,
     },
   });
+
+  const handlePersonalInformationFetch = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    handleInitiate(personalInformationQueryId);
+  }
 
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setIsLoading(true);
@@ -89,7 +106,7 @@ const RegisterForm = ({ user }: { user: User }) => {
       const newPatient = await registerPatient(patient);
 
       if (newPatient) {
-      router.push(`/patients/${user.$id}/new-appointment/?patientId=${newPatient.$id}`);
+        router.push(`/patients/${user.$id}/new-appointment/?patientId=${newPatient.$id}`);
       }
     } catch (error) {
       console.log(error);
@@ -106,12 +123,20 @@ const RegisterForm = ({ user }: { user: User }) => {
       >
         <section className="space-y-4">
           <h1 className="header">Welcome 👋</h1>
-          <p className="text-dark-700">Let us know more about yourself.</p>
+          <p className="text-dark-700">
+              <>
+                {user.email == "guest@example.com" && <>You have chosen to continue as a <strong>guest.</strong></>}
+                Please provide additional information to help us serve you better.
+              </>
+            </p>
         </section>
 
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
             <h2 className="sub-header">Personal Information</h2>
+            <button className="text-green-500" onClick={handlePersonalInformationFetch}>
+              You can also fill these details from your vault. CLick here
+            </button>
           </div>
 
           {/* NAME */}
@@ -355,24 +380,8 @@ const RegisterForm = ({ user }: { user: User }) => {
           <CustomFormfield
             fieldType={FormFieldType.CHECKBOX}
             control={form.control}
-            name="treatmentConsent"
-            label="I consent to receive treatment for my health condition."
-          />
-
-          <CustomFormfield
-            fieldType={FormFieldType.CHECKBOX}
-            control={form.control}
-            name="disclosureConsent"
-            label="I consent to the use and disclosure of my health
-            information for treatment purposes."
-          />
-
-          <CustomFormfield
-            fieldType={FormFieldType.CHECKBOX}
-            control={form.control}
-            name="privacyConsent"
-            label="I acknowledge that I have reviewed and agree to the
-            privacy policy"
+            name="combinedConsent"
+            label="I consent to receive treatment for my health condition, the use and disclosure of my health information for treatment purposes, and I acknowledge that I have reviewed and agree to the privacy policy."
           />
         </section>
 

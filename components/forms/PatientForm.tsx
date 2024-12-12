@@ -26,6 +26,7 @@ const PatientForm = () => {
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
   const [guestUser, setGuestUser] = useState<User>();
+  const {GUEST_USER}=process.env;
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof UserFormValidation>>({
@@ -55,7 +56,7 @@ const PatientForm = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const guestUser = await getUser("675a776d002ee18d4237");
+      const guestUser = await getUser("GUEST_USER");
       setGuestUser(guestUser);
     };
 

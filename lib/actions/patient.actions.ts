@@ -4,11 +4,11 @@ import { ID, Query } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 
 import {
+  APPWRITER_PROJECT_ID,
   BUCKET_ID,
   DATABASE_ID,
   ENDPOINT,
   PATIENT_COLLECTION_ID,
-  PROJECT_ID,
   databases,
   storage,
   users,
@@ -78,7 +78,7 @@ export const registerPatient = async ({
       ID.unique(),
       {
         identificationDocumentId: file?.$id || null,
-        identificationDocumentUrl: `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file?.$id}/view??project=${PROJECT_ID}`,
+        identificationDocumentUrl: `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file?.$id}/view??project=${APPWRITER_PROJECT_ID}`,
         ...patient
       }
     )
