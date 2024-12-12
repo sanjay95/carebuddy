@@ -1,7 +1,7 @@
-import { IotaRequestType } from "src/types/types";
-import { iotaFlowTypeRedirect } from "src/lib/variables";
-import useIotaQueryWebsocket from "src/lib/hooks/useIotaQueryWebsocket";
-import useIotaQueryRedirect from "src/lib/hooks/useIotaQueryRedirect";
+import { IotaRequestType } from "../../types/types";
+import { iotaFlowTypeRedirect } from "../../lib/variables";
+import useIotaQueryWebsocket from "../../lib/hooks/useIotaQueryWebsocket";
+import useIotaQueryRedirect from "../../lib/hooks/useIotaQueryRedirect";
 
 export default function useIotaQuery(params: IotaRequestType) {
   if (iotaFlowTypeRedirect) {

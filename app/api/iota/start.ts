@@ -2,8 +2,8 @@ import {
   InitiateDataSharingRequestOKData,
 } from "@affinidi-tdk/iota-client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { iotaInitiateRequest } from "src/lib/clients/iota";
-import { ResponseError } from "src/types/types";
+import { iotaInitiateRequest } from "../../../lib/clients/iota";
+import { ResponseError } from "../../../types/types";
 import { z } from "zod";
 
 const initShareSchema = z.object({

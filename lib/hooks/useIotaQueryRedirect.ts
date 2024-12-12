@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { IotaRequestRedirectType } from "src/types/types";
+import { IotaRequestRedirectType } from "../../types/types";
 import { v4 as uuidv4 } from "uuid";
 import { VaultUtils } from "@affinidi-tdk/common";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { hostUrl } from "src/lib/variables";
+import { hostUrl } from "../../lib/variables";
 
 async function getIotaRequestStart(
   configurationId: string,
