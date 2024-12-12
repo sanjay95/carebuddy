@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import RegisterForm from "@/components/forms/RegisterForm";
 import { getUser } from "@/lib/actions/patient.actions";
-import * as Sentry from "@sentry/nextjs";
 
 const Registration = () => {
   
@@ -17,7 +16,6 @@ const Registration = () => {
         try {
           const currentUser = await getUser(userId);
           setUser(currentUser);
-          Sentry.metrics.set("user_view_register", currentUser.name);
         } catch (error) {
           console.error('Error fetching user:', error);
         }

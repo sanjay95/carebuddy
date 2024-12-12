@@ -51,7 +51,7 @@ const RegisterForm = ({ user }: { user: User }) => {
     defaultValues: {
       ...PatientFormDefaultValues,
       name: user.name,
-      email: user.email,
+      // email: user.email,
       phone: user.phone,
     },
   });
@@ -202,16 +202,16 @@ const RegisterForm = ({ user }: { user: User }) => {
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="allergies"
-              label="Allergies (if any)"
-              placeholder="Peanuts, Penicillin, Pollen"
+              // label="Please describe your current health concerns to help us prepare for your visit. Also fill these details below."
+              placeholder="Please describe your current health concerns to help us prepare for your visit. Also fill these details below."
             />
 
             <CustomFormfield
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="currentMedication"
-              label="Current medications"
-              placeholder="Ibuprofen 200mg, Levothyroxine 50mcg"
+              // label="Current medications"
+              placeholder="Current medications"
             />
           </div>
 
@@ -221,16 +221,16 @@ const RegisterForm = ({ user }: { user: User }) => {
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="familyMedicalHistory"
-              label=" Family medical history (if relevant)"
-              placeholder="Mother had brain cancer, Father has hypertension"
+              // label=" Family medical history (if relevant)"
+              placeholder="Family medical history (if relevant)"
             />
 
             <CustomFormfield
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="pastMedicalHistory"
-              label="Past medical history"
-              placeholder="Appendectomy in 2015, Asthma diagnosis in childhood"
+              // label="Past medical history"
+              placeholder="Past medical history"
             />
           </div>
         </section>
