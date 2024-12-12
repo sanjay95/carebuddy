@@ -29,6 +29,7 @@ export const createUser = async (user: CreateUserParams) => {
 
     return parseStringify(newuser);
   } catch (error: any) {
+    console.log("error", error);
     // Check existing user
     if (error && error?.code === 409) {
       const existingUser = await users.list([

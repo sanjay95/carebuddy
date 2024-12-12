@@ -6,10 +6,11 @@ import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import CustomFormfield from "@/components/CustomFormfield";
 import SubmitButton from "../SubmitButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/lib/actions/patient.actions";
+import { createUser, getUser } from "@/lib/actions/patient.actions";
+import Link from "next/link";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -24,6 +25,7 @@ export enum FormFieldType {
 const PatientForm = () => {
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
+  const [guestUser, setGuestUser] = useState<User>();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof UserFormValidation>>({
@@ -47,9 +49,18 @@ const PatientForm = () => {
       const userData = { name, email, phone };
       const user = await createUser(userData);
 
-      if(user) router.push(`/patients/${user.$id}/register`);
-    } catch (error) {}
+      if (user) router.push(`/patients/${user.$id}/register`);
+    } catch (error) { }
   }
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const guestUser = await getUser("675a776d002ee18d4237");
+      setGuestUser(guestUser);
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <Form {...form}>
@@ -88,6 +99,17 @@ const PatientForm = () => {
         />
 
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
+        <div>
+          <br />
+          Or <span>&nbsp;</span>
+          {guestUser ? (
+            <Link className="text-green-500" href={`/patients/${guestUser.$id}/register`}>
+              Continue as Guest
+            </Link>
+          ) : (
+            <span>Initiating guest user...</span>
+          )}
+        </div>
       </form>
     </Form>
   );
