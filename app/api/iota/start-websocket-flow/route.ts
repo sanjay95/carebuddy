@@ -1,9 +1,9 @@
 import { IotaCredentials, Iota } from "@affinidi-tdk/iota-core";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
-import { authOptions } from "src/lib/auth/auth-options";
-import { getAuthProvider } from "src/lib/clients/auth-provider";
-import { ResponseError } from "src/types/types";
+import { authOptions } from "../../../../lib/auth/auth-options";
+import { getAuthProvider } from "../../../../lib/clients/auth-provider";
+import { ResponseError } from "../../../../types/types";
 import { z } from "zod";
 
 const iotaStartSchema = z.object({

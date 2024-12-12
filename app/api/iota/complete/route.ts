@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ResponseError } from "src/types/types";
+import { ResponseError } from "../../../../types/types";
 import { z } from "zod";
-import { iotaCompleteRequest } from "src/lib/clients/iota";
+import { iotaCompleteRequest } from "../../../../lib/clients/iota";
 
 const responseSchema = z.object({
   configurationId: z.string(),

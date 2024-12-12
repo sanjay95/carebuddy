@@ -5,8 +5,8 @@ import {
   InitiateDataSharingRequestOKData,
 } from "@affinidi-tdk/iota-client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getAuthProvider } from "src/lib/clients/auth-provider";
-import { ResponseError } from "src/types/types";
+import { getAuthProvider } from "../../../../lib/clients/auth-provider";
+import { ResponseError } from "../../../../types/types";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 

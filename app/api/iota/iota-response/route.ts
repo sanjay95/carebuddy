@@ -4,8 +4,8 @@ import {
   IotaApi,
   FetchIOTAVPResponseOK,
 } from "@affinidi-tdk/iota-client";
-import { getAuthProvider } from "src/lib/clients/auth-provider";
-import { ResponseError } from "src/types/types";
+import { getAuthProvider } from "../../../../lib/clients/auth-provider";
+import { ResponseError } from "../../../../types/types";
 import { z } from "zod";
 
 const responseSchema = z.object({
