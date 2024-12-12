@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import CustomFormfield from "@/components/CustomFormfield";
 import SubmitButton from "../SubmitButton";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { createUser, getUser } from "@/lib/actions/patient.actions";
@@ -26,7 +26,7 @@ const PatientForm = () => {
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
   const [guestUser, setGuestUser] = useState<User>();
-  const {GUEST_USER}=process.env;
+  const guestuserID = process.env.NEXT_PUBLIC_GUEST_USER
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof UserFormValidation>>({
@@ -50,18 +50,23 @@ const PatientForm = () => {
       const userData = { name, email, phone };
       const user = await createUser(userData);
 
-      if (user) router.push(`/patients/${user.$id}/register`);
-    } catch (error) { }
+      if (user) {
+        localStorage.setItem("userID", user.$id);
+        router.push(`/patients/register`);
+      }
+    } catch (error) {
+      console.error("An error occurred during user creation:", error);
+    } finally {
+      setisLoading(false);
+    }
   }
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const guestUser = await getUser("GUEST_USER");
-      setGuestUser(guestUser);
-    };
-
-    fetchUser();
-  }, []);
+  const proceedWithGuest = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log("guestUser", guestuserID);
+    localStorage.setItem("userID", guestuserID||"");
+    router.push(`/patients/register`);
+  };
 
   return (
     <Form {...form}>
@@ -103,10 +108,10 @@ const PatientForm = () => {
         <div>
           <br />
           Or <span>&nbsp;</span>
-          {guestUser ? (
-            <Link className="text-green-500" href={`/patients/${guestUser.$id}/register`}>
+          {guestuserID ? (
+            <button className="text-green-500" onClick={proceedWithGuest}>
               Continue as Guest
-            </Link>
+            </button>
           ) : (
             <span>Initiating guest user...</span>
           )}

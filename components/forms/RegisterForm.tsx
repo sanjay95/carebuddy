@@ -4,7 +4,7 @@ import CustomFormfield from "@/components/CustomFormfield";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -33,6 +33,7 @@ import { idvQueryId, iotaConfigId, personalInformationQueryId } from "@/lib/vari
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [personalInfoData, setPersonalInfoData] = useState<string>();
   const {
     isInitializing,
     isWaitingForResponse,
@@ -52,11 +53,41 @@ const RegisterForm = ({ user }: { user: User }) => {
     },
   });
 
+  useEffect(() => {
+    if (personalInfoData) {
+      form.reset({
+        ...PatientFormDefaultValues,
+        name: personalInfoData.givenName + " " + personalInfoData.familyName,
+        email: personalInfoData.email,
+        phone: personalInfoData.phoneNumber,
+        gender: personalInfoData.gender,
+        birthDate: personalInfoData.birthdate,
+      });
+    }
+    console.log("** personalInfoData **", personalInfoData);
+  }, [personalInfoData, form]);
+
   const handlePersonalInformationFetch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
     handleInitiate(personalInformationQueryId);
   }
+
+  useEffect(() => {
+    if (!iotaRequestData) return;
+
+    const personalInfoData = iotaRequestData[personalInformationQueryId];
+    if (personalInfoData) {
+      setIsLoading(false);
+      const data = JSON.stringify(personalInfoData, null, 2);
+      setPersonalInfoData(JSON.parse(data));
+      localStorage.setItem("personalInfoData", data);
+      localStorage.setItem(
+        "verifiablePresentation",
+        JSON.stringify(dataRequest.response.verifiablePresentation, null, 2)
+      );
+    }
+  }, [iotaRequestData]);
 
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setIsLoading(true);
@@ -135,7 +166,7 @@ const RegisterForm = ({ user }: { user: User }) => {
           <div className="mb-9 space-y-1">
             <h2 className="sub-header">Personal Information</h2>
             <button className="text-green-500" onClick={handlePersonalInformationFetch}>
-              You can also fill these details from your vault. CLick here
+              You can also fill these details from your vault. Click here
             </button>
           </div>
 
