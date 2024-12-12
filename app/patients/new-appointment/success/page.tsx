@@ -10,9 +10,9 @@ import { getUser } from "@/lib/actions/patient.actions";
 
 const Success = async ({
   searchParams,
-  params: { userId },
 }: SearchParamProps) => {
   const appointmentId = (searchParams?.appointmentId as string) || "";
+  const userId= (searchParams?.userId as string) || "";
   const appointment = await getAppointment(appointmentId);
   const doctor = Doctors.find((doctor) => doctor.name === appointment.primaryPhysician);
   const user = await getUser(userId);

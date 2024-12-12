@@ -56,6 +56,10 @@
     @apply text-18-bold md:text-24-bold;
   }
 
+  .subSubHeader {
+    @apply text-12-bold md:text-20-bold;
+  }
+
   .container {
     @apply relative flex-1 overflow-y-auto px-[5%];
   }

@@ -79,6 +79,79 @@ export const Doctors = [
   },
 ];
 
+export const Department = [
+  {
+    name: "Cardiology",
+    image: "https://healthicons.org/icons/svg/outline/body/heart_organ.svg",
+    doctors: ["John Green", "Leila Cameron", "David Livingston"],
+  },
+  {
+    name: "Dermatology",
+    image: "https://healthicons.org/icons/svg/outline/body/body.svg",
+    doctors: ["Evan Peter", "Jane Powell", "Alex Ramirez"],
+  },
+  {
+    name: "Endocrinology",
+    image: "https://healthicons.org/icons/svg/outline/specialties/endocrinology.svg",
+    doctors: ["Jasmine Lee", "Alyana Cruz", "Hardik Sharma"],
+  },
+  {
+    name: "Gastroenterology",
+    image: "https://healthicons.org/icons/svg/outline/specialties/gastroenterology.svg",
+    doctors: ["John Green", "Leila Cameron", "David Livingston"],
+  },
+  {
+    name: "Hematology",
+    image: "https://healthicons.org/icons/svg/outline/specialties/hematology.svg",
+    doctors: ["Evan Peter", "Jane Powell", "Alex Ramirez"],
+  },
+  {
+    name: "Infectious Disease",
+    image: "https://healthicons.org/icons/svg/outline/symbols/outbreak.svg",
+    doctors: ["Jasmine Lee", "Alyana Cruz", "Hardik Sharma"],
+  },
+  {
+    name: "Nephrology",
+    image: "https://healthicons.org/icons/svg/outline/specialties/nephrology.svg",
+    doctors: ["John Green", "Leila Cameron", "David Livingston"],
+  },
+  {
+    name: "Neurology",
+    image: "https://healthicons.org/icons/svg/outline/body/neurology.svg",
+    doctors: ["Evan Peter", "Jane Powell", "Alex Ramirez"],
+  },
+  {
+    name: "Oncology",
+    image: "https://healthicons.org/icons/svg/outline/specialties/oncology.svg",
+    doctors: ["Jasmine Lee", "Alyana Cruz", "Hardik Sharma"],
+  },
+  {
+    name: "Ophthalmology",
+    image: "https://healthicons.org/icons/svg/outline/devices/contact_lenses.svg",
+    doctors: ["John Green", "Leila Cameron", "David Livingston"],
+  },
+  {
+    name: "Orthopedics",
+    image: "https://healthicons.org/icons/svg/outline/body/joints.svg",
+    doctors: ["Evan Peter", "Jane Powell", "Alex Ramirez"],
+  },
+  {
+    name: "Pulmonology",
+    image: "https://healthicons.org/icons/svg/outline/body/lungs.svg",
+    doctors: ["Evan Peter", "Jane Powell", "Alex Ramirez"],
+  },
+  {
+    name: "Rheumatology",
+    image: "https://healthicons.org/icons/svg/outline/specialties/rheumatology.svg",
+    doctors: ["John Green", "Leila Cameron", "David Livingston"],
+  },
+  {
+    name: "Urology",
+    image: "https://healthicons.org/icons/svg/outline/specialties/urology.svg",
+    doctors: ["Evan Peter", "Jane Powell", "Alex Ramirez"],
+  },
+];
+
 export const StatusIcon = {
   scheduled: "/assets/icons/check.svg",
   pending: "/assets/icons/pending.svg",

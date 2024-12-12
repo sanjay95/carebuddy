@@ -21,13 +21,11 @@ import {
 import { Appointment } from "@/types/appwrite.types";
 
 const AppointmentForm = ({
-  userId,
   patientId,
   type,
   appointment,
   setOpen,
 }: {
-  userId: string;
   patientId: string;
   type: "create" | "schedule" | "cancel";
   appointment?: Appointment;
@@ -36,6 +34,7 @@ const AppointmentForm = ({
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
   const AppointmentFormValidation = getAppointmentSchema(type);
+  const userId = localStorage.getItem("userID");
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
@@ -70,7 +69,7 @@ const AppointmentForm = ({
     }
 
     try {
-      if (type === "create" && patientId) {
+      if (type === "create" && patientId && userId) {
         const appointmentData = {
           userId,
           patient: patientId,
@@ -86,7 +85,7 @@ const AppointmentForm = ({
         if (appointment) {
           form.reset();
           router.push(
-            `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
+            `/patients//new-appointment/success?appointmentId=${appointment.$id}`
           );
         }
       } else {

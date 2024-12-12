@@ -91,8 +91,6 @@ export const getRecentAppointmentList = async () => {
      console.log("appointments", appointments);
     await Promise.all(
       appointments.documents.map(async (appointment) => {
-        console.log("appointment", appointment);
-        console.log("appointment.patient", appointment.patient);
         const patientResponse = await databases.getDocument(
           DATABASE_ID!,
           PATIENT_COLLECTION_ID!,
