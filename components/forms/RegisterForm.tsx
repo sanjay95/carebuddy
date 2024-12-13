@@ -74,6 +74,13 @@ const RegisterForm = ({ user }: { user: User }) => {
           180 Day Avg Sys: ${healthVitalData.bpSys180DayAvg}  /   Dia: ${healthVitalData.bpDia180DayAvg}
           360 Day Avg Sys: ${healthVitalData.bpSys360DayAvg}  /   Dia: ${healthVitalData.bpDia360DayAvg}
         `;
+        const familyHistory = healthVitalData.familyHistory
+          .map((member: { relation: string; disease: { diseaseName: string; severity: string; firstOccuranceDate: string }[] }) =>
+            member.disease
+              .map(disease => `${member.relation} | ${disease.diseaseName} | ${disease.severity} | ${disease.firstOccuranceDate}`)
+              .join("\n")
+          )
+          .join("\n");
 
       form.reset({
         ...PatientFormDefaultValues,
@@ -82,6 +89,7 @@ const RegisterForm = ({ user }: { user: User }) => {
         gender: healthVitalData.user.gender,
         allergies:allergies,
         currentMedication: latestVital,
+        familyMedicalHistory: familyHistory,
       });
     }
     console.log("** healthVitalData **", healthVitalData);

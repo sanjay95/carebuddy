@@ -47,7 +47,7 @@ export const PatientFormValidation = z.object({
   //   .string(),
     allergies: z.string().optional(),
   currentMedication: z.string().optional(),
-  // familyMedicalHistory: z.string().optional(),
+  familyMedicalHistory: z.string().optional(),
   // pastMedicalHistory: z.string().optional(),
   // identificationType: z.string().optional(),
   // identificationNumber: z.string().optional(),
