@@ -57,13 +57,13 @@ const RegisterForm = ({ user }: { user: User }) => {
     },
   });
 
-  
+
   useEffect(() => {
     if (healthVitalData) {
       const allergies = healthVitalData.currentConditions
         .map((condition: { description: string }) => condition.description)
         .join(", ");
-        const latestVital = `       Latest of: ${healthVitalData.aggregationDate}      | from: ${healthVitalData.organizationId}
+      const latestVital = `       Latest of: ${healthVitalData.aggregationDate}      | from: ${healthVitalData.organizationId}
                     BMI: ${healthVitalData.currBmiValue}          Weight Daily Avg (lbs): ${healthVitalData.weightDailyAvgLbs}
              BP Sys UOM: ${healthVitalData.bpSysUom}          /   BP Dia UOM: ${healthVitalData.bpDiaUom}
           1 Day Trend Sys: ${healthVitalData.bpSys1DayTrend}  /   Dia: ${healthVitalData.bpDia1DayTrend}
@@ -74,20 +74,20 @@ const RegisterForm = ({ user }: { user: User }) => {
           180 Day Avg Sys: ${healthVitalData.bpSys180DayAvg}  /   Dia: ${healthVitalData.bpDia180DayAvg}
           360 Day Avg Sys: ${healthVitalData.bpSys360DayAvg}  /   Dia: ${healthVitalData.bpDia360DayAvg}
         `;
-        const familyHistory = healthVitalData.familyHistory
-          .map((member: { relation: string; disease: { diseaseName: string; severity: string; firstOccuranceDate: string }[] }) =>
-            member.disease
-              .map(disease => `${member.relation} | ${disease.diseaseName} | ${disease.severity} | ${disease.firstOccuranceDate}`)
-              .join("\n")
-          )
-          .join("\n");
+      const familyHistory = healthVitalData.familyHistory
+        .map((member: { relation: string; disease: { diseaseName: string; severity: string; firstOccuranceDate: string }[] }) =>
+          member.disease
+            .map(disease => `${member.relation} | ${disease.diseaseName} | ${disease.severity} | ${disease.firstOccuranceDate}`)
+            .join("\n")
+        )
+        .join("\n");
 
       form.reset({
         ...PatientFormDefaultValues,
         name: healthVitalData.user.name,
         phone: healthVitalData.user.phone,
         gender: healthVitalData.user.gender,
-        allergies:allergies,
+        allergies: allergies,
         currentMedication: latestVital,
         familyMedicalHistory: familyHistory,
       });
@@ -142,9 +142,9 @@ const RegisterForm = ({ user }: { user: User }) => {
         pastMedicalHistory: "",
         identificationType: "",
         identificationNumber: "",
-        identificationDocument: undefined ,//values.identificationDocument
-          // ? formData
-          // : undefined,
+        identificationDocument: undefined,//values.identificationDocument
+        // ? formData
+        // : undefined,
         privacyConsent: true,
       };
 
@@ -213,36 +213,36 @@ const RegisterForm = ({ user }: { user: User }) => {
           <div className="mb-9 space-y-1">
             <h4 className="sub-sub-header">Medical Information</h4>
             <button className="text-green-500" onClick={handlePersonalInformationFetch}>
-              You can fill these details from your health vault. Click here 
+              You can fill these details from your health vault. Click here
             </button>
             {isHealthDataLoading && (
               <div className="flex items-center space-x-2">
-              <svg
-                className="w-5 h-5 text-blue-500 animate-spin"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-                ></circle>
-                <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              <p className="text-blue-500"> please wait...</p>
+                <svg
+                  className="w-5 h-5 text-blue-500 animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <p className="text-blue-500"> please wait...</p>
               </div>
             )}
           </div>
 
-        
+
 
 
 
@@ -285,29 +285,29 @@ const RegisterForm = ({ user }: { user: User }) => {
           </div>
         </section>
 
-          {/* PRIMARY CARE PHYSICIAN */}
-          <CustomFormfield
-            fieldType={FormFieldType.SELECT}
-            control={form.control}
-            name="primaryPhysician"
-            label="Select Department & Physician"
-            placeholder="Department & Physician"
-          >
-            {Department.map((department, i) => (
-              <SelectItem key={department.name + i} value={department.name}>
-                <div className="flex cursor-pointer items-center gap-2">
-                  <Image
-                    src={department.image}
-                    width={32}
-                    height={32}
-                    alt="department"
-                    className="rounded-full border border-dark-500 bg-white"
-                  />
-                  <p> <strong> {department.name}  </strong> {'     ( ' + department.doctors + ' )'}</p>
-                </div>
-              </SelectItem>
-            ))}
-          </CustomFormfield>
+        {/* PRIMARY CARE PHYSICIAN */}
+        <CustomFormfield
+          fieldType={FormFieldType.SELECT}
+          control={form.control}
+          name="primaryPhysician"
+          label="Select Department & Physician"
+          placeholder="Department & Physician"
+        >
+          {Department.map((department, i) => (
+            <SelectItem key={department.name + i} value={department.name}>
+              <div className="flex cursor-pointer items-center gap-2">
+                <Image
+                  src={department.image}
+                  width={32}
+                  height={32}
+                  alt="department"
+                  className="rounded-full border border-dark-500 bg-white"
+                />
+                <p> <strong> {department.name}  </strong> {'     ( ' + department.doctors + ' )'}</p>
+              </div>
+            </SelectItem>
+          ))}
+        </CustomFormfield>
 
         {/* INSURANCE & POLICY NUMBER */}
         {insurnceCertificate &&
