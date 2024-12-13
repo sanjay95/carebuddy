@@ -57,13 +57,31 @@ const RegisterForm = ({ user }: { user: User }) => {
     },
   });
 
+  
   useEffect(() => {
     if (healthVitalData) {
+      const allergies = healthVitalData.currentConditions
+        .map((condition: { description: string }) => condition.description)
+        .join(", ");
+        const latestVital = `       Latest of: ${healthVitalData.aggregationDate}      | from: ${healthVitalData.organizationId}
+                    BMI: ${healthVitalData.currBmiValue}          Weight Daily Avg (lbs): ${healthVitalData.weightDailyAvgLbs}
+             BP Sys UOM: ${healthVitalData.bpSysUom}          /   BP Dia UOM: ${healthVitalData.bpDiaUom}
+          1 Day Trend Sys: ${healthVitalData.bpSys1DayTrend}  /   Dia: ${healthVitalData.bpDia1DayTrend}
+          1 Day Avg Sys: ${healthVitalData.bpSys1DayAvg}      /   Dia: ${healthVitalData.bpDia1DayAvg}
+          7 Day Avg Sys: ${healthVitalData.bpSys7DayAvg}      /   Dia: ${healthVitalData.bpDia7DayAvg}
+          30 Day Avg Sys: ${healthVitalData.bpSys30DayAvg}    /   Dia: ${healthVitalData.bpDia30DayAvg}
+          90 Day Avg Sys: ${healthVitalData.bpSys90DayAvg}    /   Dia: ${healthVitalData.bpDia90DayAvg}
+          180 Day Avg Sys: ${healthVitalData.bpSys180DayAvg}  /   Dia: ${healthVitalData.bpDia180DayAvg}
+          360 Day Avg Sys: ${healthVitalData.bpSys360DayAvg}  /   Dia: ${healthVitalData.bpDia360DayAvg}
+        `;
+
       form.reset({
         ...PatientFormDefaultValues,
         name: healthVitalData.user.name,
         phone: healthVitalData.user.phone,
-        gender: healthVitalData.user.gender
+        gender: healthVitalData.user.gender,
+        allergies:allergies,
+        currentMedication: latestVital,
       });
     }
     console.log("** healthVitalData **", healthVitalData);
@@ -190,7 +208,29 @@ const RegisterForm = ({ user }: { user: User }) => {
               You can fill these details from your health vault. Click here 
             </button>
             {isHealthDataLoading && (
-              <p className="text-blue-500 animate-pulse">Please wait ...</p>
+              <div className="flex items-center space-x-2">
+              <svg
+                className="w-5 h-5 text-blue-500 animate-spin"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                ></circle>
+                <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <p className="text-blue-500"> please wait...</p>
+              </div>
             )}
           </div>
 
@@ -204,7 +244,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="allergies"
-              // label="Please describe your current health concerns to help us prepare for your visit. Also fill these details below."
+              label="Current conditions"
               placeholder="Please describe your current health concerns to help us prepare for your visit. Also fill these details below."
             />
 
@@ -212,8 +252,8 @@ const RegisterForm = ({ user }: { user: User }) => {
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="currentMedication"
-              // label="Current medications"
-              placeholder="Current medications"
+              label="Latest Vital Data"
+              placeholder="Blood pressure, heart rate, temperature"
             />
           </div>
 
@@ -223,16 +263,16 @@ const RegisterForm = ({ user }: { user: User }) => {
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="familyMedicalHistory"
-              // label=" Family medical history (if relevant)"
-              placeholder="Family medical history (if relevant)"
+              label=" Family medical history (if relevant)"
+              placeholder="Father has hypertension"
             />
 
             <CustomFormfield
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="pastMedicalHistory"
-              // label="Past medical history"
-              placeholder="Past medical history"
+              label="Lab results, past medical history"
+              placeholder="High cholesterol, diabetes"
             />
           </div>
         </section>
