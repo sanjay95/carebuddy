@@ -29,12 +29,12 @@ import SubmitButton from "../SubmitButton";
 import { FormFieldType } from "./PatientForm";
 import Link from "next/link";
 import useIotaQueryKyc from "@/lib/hooks/useIotaQueryKYC";
-import { idvQueryId, iotaConfigId, personalInformationQueryId } from "@/lib/variables";
+import { idvQueryId, iotaConfigId, aggregateHealthDataQueryId } from "@/lib/variables";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [personalInfoData, setPersonalInfoData] = useState<string>();
+  const [healthVitalData, sethealthVitalData] = useState<string>();
   const [familyMedicalHistory, setFamilyMedicalHistory] = useState<string>();
   const [insurnceCertificate, setInsuranceCertificate] = useState<string>();
   const {
@@ -57,34 +57,32 @@ const RegisterForm = ({ user }: { user: User }) => {
   });
 
   useEffect(() => {
-    if (personalInfoData) {
+    if (healthVitalData) {
       form.reset({
         ...PatientFormDefaultValues,
-        name: personalInfoData.givenName + " " + personalInfoData.familyName,
-        email: personalInfoData.email,
-        phone: personalInfoData.phoneNumber,
-        gender: personalInfoData.gender,
-        birthDate: personalInfoData.birthdate,
+        name: healthVitalData.user.name,
+        phone: healthVitalData.user.phone,
+        gender: healthVitalData.user.gender
       });
     }
-    console.log("** personalInfoData **", personalInfoData);
-  }, [personalInfoData, form]);
+    console.log("** healthVitalData **", healthVitalData);
+  }, [healthVitalData, form]);
 
   const handlePersonalInformationFetch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    handleInitiate(personalInformationQueryId);
+    handleInitiate(aggregateHealthDataQueryId);
   }
 
   useEffect(() => {
     if (!iotaRequestData) return;
 
-    const personalInfoData = iotaRequestData[personalInformationQueryId];
-    if (personalInfoData) {
+    const healthVitalData = iotaRequestData[aggregateHealthDataQueryId];
+    if (healthVitalData) {
       setIsLoading(false);
-      const data = JSON.stringify(personalInfoData, null, 2);
-      setPersonalInfoData(JSON.parse(data));
-      localStorage.setItem("personalInfoData", data);
+      const data = JSON.stringify(healthVitalData, null, 2);
+      sethealthVitalData(JSON.parse(data));
+      localStorage.setItem("healthVitalData", data);
       localStorage.setItem(
         "verifiablePresentation",
         JSON.stringify(dataRequest.response.verifiablePresentation, null, 2)
