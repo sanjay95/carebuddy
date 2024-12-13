@@ -26,6 +26,7 @@ interface Props {
   control: Control<any>;
   name: string;
   label?: string;
+  labelClass?: string;
   placeholder?: string;
   iconSrc?: string;
   iconAlt?: string;
@@ -35,6 +36,8 @@ interface Props {
   children?: React.ReactNode;
   renderSkeleton?: (field: any) => React.ReactNode;
   fieldType: FormFieldType;
+  value?: string; // Add value prop
+  onValueChange?: (value: string) => void; // Add onValueChange callback
 }
 
 const RenderField = ({ field, props }: { field: any; props: Props }) => {
@@ -109,21 +112,27 @@ const RenderField = ({ field, props }: { field: any; props: Props }) => {
         </div>
       );
 
-    case FormFieldType.SELECT:
-      return (
-        <FormControl>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl>
-              <SelectTrigger className="shad-select-trigger">
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent className="shad-select-content">
-              {props.children}
-            </SelectContent>
-          </Select>
-        </FormControl>
-      );
+      case FormFieldType.SELECT:
+        return (
+          <FormControl>
+            <Select
+              onValueChange={(val) => {
+                field.onChange(val); // Update internal field state
+                props.onValueChange && props.onValueChange(val); // Trigger external change handler if provided
+              }}
+              value={props.value || field.value} // Use value from props or field
+            >
+              <FormControl>
+                <SelectTrigger className="shad-select-trigger">
+                  <SelectValue placeholder={placeholder} />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent className="shad-select-content">
+                {props.children}
+              </SelectContent>
+            </Select>
+          </FormControl>
+        );
 
     case FormFieldType.TEXTAREA:
       return (
@@ -162,7 +171,7 @@ const RenderField = ({ field, props }: { field: any; props: Props }) => {
 };
 
 function CustomFormfield(props: Props) {
-  const { control, name, label } = props;
+  const { control, name, label, labelClass } = props;
 
   return (
     <FormField
@@ -171,7 +180,7 @@ function CustomFormfield(props: Props) {
       render={({ field }) => (
         <FormItem className="flex-1">
           {props.fieldType !== FormFieldType.CHECKBOX && label && (
-            <FormLabel className="shad-input-label">{label}</FormLabel>
+            <FormLabel className={`shad-input-label ${labelClass || ""}`}>{label}</FormLabel>
           )}
           <RenderField field={field} props={props} />
 

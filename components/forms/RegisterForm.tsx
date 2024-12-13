@@ -4,19 +4,14 @@ import CustomFormfield from "@/components/CustomFormfield";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form, FormControl } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Form } from "@/components/ui/form";
 import { SelectItem } from "@/components/ui/select";
 import {
   Department,
-  Doctors,
-  GenderOptions,
-  IdentificationTypes,
   PatientFormDefaultValues,
 } from "@/constants";
 import { registerPatient } from "@/lib/actions/patient.actions";
@@ -24,12 +19,10 @@ import { PatientFormValidation } from "@/lib/validation";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
-import { FileUploader } from "../FileUploader";
 import SubmitButton from "../SubmitButton";
 import { FormFieldType } from "./PatientForm";
-import Link from "next/link";
 import useIotaQuery from "@/lib/hooks/useIotaQuery";
-import { idvQueryId, iotaConfigId, aggregateHealthDataQueryId } from "@/lib/variables";
+import { iotaConfigId, aggregateHealthDataQueryId } from "@/lib/variables";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -47,6 +40,16 @@ const RegisterForm = ({ user }: { user: User }) => {
     dataRequest,
   } = useIotaQuery({ configurationId: iotaConfigId });
 
+  const [selectedDepartment, setSelectedDepartment] = useState("")
+
+  const label = healthVitalData
+  ? "We have selected department for you based on your health data. Feel free to change it."
+  : "Select Department & Physician";
+
+const labelClass = healthVitalData
+  ? "text-green-500 font-semibold"
+  : "text-gray-700";
+
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
@@ -60,6 +63,7 @@ const RegisterForm = ({ user }: { user: User }) => {
 
   useEffect(() => {
     if (healthVitalData) {
+      setSelectedDepartment("Cardiology");
       const allergies = healthVitalData.currentConditions
         .map((condition: { description: string }) => condition.description)
         .join(", ");
@@ -286,12 +290,16 @@ const RegisterForm = ({ user }: { user: User }) => {
         </section>
 
         {/* PRIMARY CARE PHYSICIAN */}
+        
         <CustomFormfield
           fieldType={FormFieldType.SELECT}
           control={form.control}
           name="primaryPhysician"
-          label="Select Department & Physician"
+          label={label}
+          labelClass={labelClass}
           placeholder="Department & Physician"
+          value={selectedDepartment}
+          onValueChange={setSelectedDepartment} // Handle change
         >
           {Department.map((department, i) => (
             <SelectItem key={department.name + i} value={department.name}>
