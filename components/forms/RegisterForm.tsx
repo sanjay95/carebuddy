@@ -67,7 +67,7 @@ const RegisterForm = ({ user }: { user: User }) => {
       });
     }
     console.log("** healthVitalData **", healthVitalData);
-  }, [healthVitalData, form]);
+  }, [healthVitalData]);
 
   const handlePersonalInformationFetch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
