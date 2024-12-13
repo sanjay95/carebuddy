@@ -28,7 +28,7 @@ import { FileUploader } from "../FileUploader";
 import SubmitButton from "../SubmitButton";
 import { FormFieldType } from "./PatientForm";
 import Link from "next/link";
-import useIotaQueryKyc from "@/lib/hooks/useIotaQueryKYC";
+import useIotaQuery from "@/lib/hooks/useIotaQuery";
 import { idvQueryId, iotaConfigId, aggregateHealthDataQueryId } from "@/lib/variables";
 
 const RegisterForm = ({ user }: { user: User }) => {
@@ -45,7 +45,7 @@ const RegisterForm = ({ user }: { user: User }) => {
     errorMessage,
     data: iotaRequestData,
     dataRequest,
-  } = useIotaQueryKyc({ configurationId: iotaConfigId });
+  } = useIotaQuery({ configurationId: iotaConfigId });
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
