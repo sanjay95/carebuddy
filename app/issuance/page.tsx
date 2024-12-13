@@ -7,6 +7,9 @@ import { VaultUtils } from "@affinidi-tdk/common";
 import { OfferPayload } from "@/types/types";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { VCNameValidation } from "@/lib/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const bpAggregateData = {
   vitalAggregateID: "123456",
@@ -139,28 +142,52 @@ const Issuance = () => {
   const [txCode, setTxCode] = useState("");
   const [issuanceResponse, setIssuanceResponse] = useState<OfferPayload>();
 
-  const form = useForm({
-    defaultValues: {},
+ const form = useForm<z.infer<typeof VCNameValidation>>({
+    resolver: zodResolver(VCNameValidation),
+    defaultValues: {
+      selectedVC: "",
+    },
   });
 
   const onSubmit = async (values: any) => {
     setIsLoading(true);
+    console.log("values", values);
 
-    const patient = {
-      name: values.name,
-    };
-    console.log("onSubmit called", patient);
-
-    //Call API to start VC issuance
-    const response = await fetch("/api/issuance/start", {
-      method: "POST",
-      body: JSON.stringify({
+    // Call API to start VC issuance
+    let requestBody;
+    switch (values.selectedVC) {
+      case "AHC Vitals Aggregate":
+      requestBody = {
         bpAggregateData,
         credentialTypeId: "AHC Vitals Aggregate",
         claimMode: StartIssuanceInputClaimModeEnum.TxCode,
-      }),
+      };
+      break;
+      case "Family Medical History":
+      requestBody = {
+        familyMedicalHistory,
+        credentialTypeId: "Family Medical History",
+        claimMode: StartIssuanceInputClaimModeEnum.TxCode,
+      };
+      break;
+      case "labReportData":
+      requestBody = {
+        labReportData,
+        credentialTypeId: "Lab Report",
+        claimMode: StartIssuanceInputClaimModeEnum.TxCode,
+      };
+      break;
+      default:
+      console.log("Invalid selection");
+      setIsLoading(false);
+      return;
+    }
+
+    const response = await fetch("/api/issuance/start", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json",
+      "Content-Type": "application/json",
       },
     });
     setIsLoading(false);
@@ -193,28 +220,28 @@ const Issuance = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex-1 space-y-12"
             >
-              <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-              <div className="flex-1">
                 <SubmitButton isLoading={isLoading}>
-                Issue Aggregate Vital VC
+                  Issue Selected VCs
                 </SubmitButton>
-                <pre>{JSON.stringify(bpAggregateData, null, 2)}</pre>
-              </div>
-
-              <div className="flex-1">
-                <SubmitButton isLoading={isLoading}>
-                Issue Family Medical History VC
-                </SubmitButton>
-                <pre>{JSON.stringify(familyMedicalHistory, null, 2)}</pre>
-              </div>
-
-              <div className="flex-1">
-                <SubmitButton isLoading={isLoading}>
-                Issue Lab Report VC
-                </SubmitButton>
-                <pre>{JSON.stringify(labReportData, null, 2)}</pre>
-              </div>
-              </div>
+                <div className="flex flex-col space-y-4">
+                  <div className="flex space-x-4">
+                  <div className="flex flex-col space-y-2">
+                    <input type="radio" id="bpAggregateData" value="AHC Vitals Aggregate" {...form.register("selectedVC")} />
+                    <label htmlFor="bpAggregateData">Issue Aggregate Vital VC</label>
+                    <pre>{JSON.stringify(bpAggregateData, null, 2)}</pre>
+                  </div>
+                  <div className="flex flex-col space-y-2">
+                    <input type="radio" id="familyMedicalHistory" value="Family Medical History" {...form.register("selectedVC")} />
+                    <label htmlFor="familyMedicalHistory">Issue Family Medical History VC</label>
+                    <pre>{JSON.stringify(familyMedicalHistory, null, 2)}</pre>
+                  </div>
+                  <div className="flex flex-col space-y-2">
+                    <input type="radio" id="labReportData" value="labReportData" {...form.register("selectedVC")} />
+                    <label htmlFor="labReportData">Issue Lab Report VC</label>
+                    <pre>{JSON.stringify(labReportData, null, 2)}</pre>
+                  </div>
+                  </div>
+                </div>
             </form>
           )}
 
