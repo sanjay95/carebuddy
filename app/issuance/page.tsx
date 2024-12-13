@@ -60,28 +60,29 @@ const bpAggregateData = {
   bpDia360DayAvg: 81.0,
 };
 const familyMedicalHistory = {
-  patient: {
+  user: {
     userId: "user123",
     name: "John Doe",
     gender: "Male",
     email: "john.doe@example.com",
     phone: "1234567890",
   },
-  familyMembers: [
+  aggregationDate: "2024-12-09",
+  familyHistory: [
     {
       name: "Jane Doe",
       relation: "Spouse",
-      conditions: [
+      disease: [
         {
           conditionId: "cond2",
-          name: "Diabetes",
+          diseaseName: "Diabetes",
           description: "High blood sugar levels",
           severity: "Medium",
           firstOccuranceDate: "2015-06-01",
         },
         {
           conditionId: "cond3",
-          name: "Asthma",
+          diseaseName: "Asthma",
           description: "Respiratory condition",
           severity: "Low",
           firstOccuranceDate: "2010-09-15",
@@ -91,17 +92,17 @@ const familyMedicalHistory = {
     {
       name: "Michael Doe",
       relation: "Father",
-      conditions: [
+      disease: [
         {
           conditionId: "cond4",
-          name: "Heart Disease",
+          diseaseName: "Cardiovascular Disease",
           description: "Cardiovascular condition",
           severity: "High",
           firstOccuranceDate: "2000-01-20",
         },
         {
           conditionId: "cond5",
-          name: "Arthritis",
+          diseaseName: "Arthritis",
           description: "Joint inflammation",
           severity: "Medium",
           firstOccuranceDate: "2012-03-10",
@@ -111,17 +112,17 @@ const familyMedicalHistory = {
     {
       name: "Sarah Doe",
       relation: "Mother",
-      conditions: [
+      disease: [
         {
           conditionId: "cond6",
-          name: "Osteoporosis",
+          diseaseName: "Osteoporosis",
           description: "Bone density loss",
           severity: "Medium",
           firstOccuranceDate: "2018-07-22",
         },
         {
           conditionId: "cond7",
-          name: "Thyroid Disorder",
+          diseaseName: "Thyroid Disorder",
           description: "Thyroid gland issues",
           severity: "Low",
           firstOccuranceDate: "2011-11-05",
@@ -133,16 +134,19 @@ const familyMedicalHistory = {
 const labReportData = {
   patient: {
     userId: "user123",
-    name: "John Doe", 
+    name: "John Doe",
   }
 }
+
+var credentialData = undefined;
+var credentialTypeId = undefined;
 const Issuance = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [vaultLink, setVaultLink] = useState("");
   const [txCode, setTxCode] = useState("");
   const [issuanceResponse, setIssuanceResponse] = useState<OfferPayload>();
 
- const form = useForm<z.infer<typeof VCNameValidation>>({
+  const form = useForm<z.infer<typeof VCNameValidation>>({
     resolver: zodResolver(VCNameValidation),
     defaultValues: {
       selectedVC: "",
@@ -154,40 +158,33 @@ const Issuance = () => {
     console.log("values", values);
 
     // Call API to start VC issuance
-    let requestBody;
     switch (values.selectedVC) {
       case "AHC Vitals Aggregate":
-      requestBody = {
-        bpAggregateData,
-        credentialTypeId: "AHC Vitals Aggregate",
-        claimMode: StartIssuanceInputClaimModeEnum.TxCode,
-      };
-      break;
+        credentialData = { ...bpAggregateData };
+        credentialTypeId = "AHC Vitals Aggregate";
+        break;
       case "Family Medical History":
-      requestBody = {
-        familyMedicalHistory,
-        credentialTypeId: "Family Medical History",
-        claimMode: StartIssuanceInputClaimModeEnum.TxCode,
-      };
-      break;
+        credentialData = { ...familyMedicalHistory };
+        credentialTypeId = "Family Medical History";
+        break;
       case "labReportData":
-      requestBody = {
-        labReportData,
-        credentialTypeId: "Lab Report",
-        claimMode: StartIssuanceInputClaimModeEnum.TxCode,
-      };
-      break;
+        credentialData = { ...labReportData };
+        credentialTypeId = "Lab Report";
+        break;
       default:
-      console.log("Invalid selection");
-      setIsLoading(false);
-      return;
+        console.log("Invalid selection");
+        setIsLoading(false);
+        return;
     }
-
     const response = await fetch("/api/issuance/start", {
       method: "POST",
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify({
+        credentialData,
+        credentialTypeId,
+        claimMode: StartIssuanceInputClaimModeEnum.TxCode,
+      }),
       headers: {
-      "Content-Type": "application/json",
+        "Content-Type": "application/json",
       },
     });
     setIsLoading(false);
@@ -220,11 +217,11 @@ const Issuance = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex-1 space-y-12"
             >
-                <SubmitButton isLoading={isLoading}>
-                  Issue Selected VCs
-                </SubmitButton>
-                <div className="flex flex-col space-y-4">
-                  <div className="flex space-x-4">
+              <SubmitButton isLoading={isLoading}>
+                Issue Selected VCs
+              </SubmitButton>
+              <div className="flex flex-col space-y-4">
+                <div className="flex space-x-4">
                   <div className="flex flex-col space-y-2">
                     <input type="radio" id="bpAggregateData" value="AHC Vitals Aggregate" {...form.register("selectedVC")} />
                     <label htmlFor="bpAggregateData">Issue Aggregate Vital VC</label>
@@ -240,8 +237,8 @@ const Issuance = () => {
                     <label htmlFor="labReportData">Issue Lab Report VC</label>
                     <pre>{JSON.stringify(labReportData, null, 2)}</pre>
                   </div>
-                  </div>
                 </div>
+              </div>
             </form>
           )}
 
@@ -250,7 +247,7 @@ const Issuance = () => {
               <h2 className="header mb-6 max-w-[600px] text-center">
                 Your{" "}
                 <span className="text-green-500">Health Vitals Credential </span>
-                has been issued successfully! <br/> Click link or button to Claim it.
+                has been issued successfully! <br /> Click link or button to Claim it.
               </h2>
               <section className="request-details">
                 <p>Offer URL:</p>
