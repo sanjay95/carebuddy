@@ -34,6 +34,7 @@ import { idvQueryId, iotaConfigId, aggregateHealthDataQueryId } from "@/lib/vari
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isHealthDataLoading, setIsHealthDataLoading] = useState(false);
   const [healthVitalData, sethealthVitalData] = useState<string>();
   const [familyMedicalHistory, setFamilyMedicalHistory] = useState<string>();
   const [insurnceCertificate, setInsuranceCertificate] = useState<string>();
@@ -70,7 +71,7 @@ const RegisterForm = ({ user }: { user: User }) => {
 
   const handlePersonalInformationFetch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsHealthDataLoading(true);
     handleInitiate(aggregateHealthDataQueryId);
   }
 
@@ -79,7 +80,7 @@ const RegisterForm = ({ user }: { user: User }) => {
 
     const healthVitalData = iotaRequestData[aggregateHealthDataQueryId];
     if (healthVitalData) {
-      setIsLoading(false);
+      setIsHealthDataLoading(false);
       const data = JSON.stringify(healthVitalData, null, 2);
       sethealthVitalData(JSON.parse(data));
       localStorage.setItem("healthVitalData", data);
@@ -186,8 +187,11 @@ const RegisterForm = ({ user }: { user: User }) => {
           <div className="mb-9 space-y-1">
             <h4 className="sub-sub-header">Medical Information</h4>
             <button className="text-green-500" onClick={handlePersonalInformationFetch}>
-              You can fill these details from your health vault. Click here
+              You can fill these details from your health vault. Click here 
             </button>
+            {isHealthDataLoading && (
+              <p className="text-blue-500 animate-pulse">Please wait ...</p>
+            )}
           </div>
 
         
