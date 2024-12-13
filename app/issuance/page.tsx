@@ -74,14 +74,14 @@ const familyMedicalHistory = {
       relation: "Spouse",
       disease: [
         {
-          conditionId: "cond2",
+
           diseaseName: "Diabetes",
           description: "High blood sugar levels",
           severity: "Medium",
           firstOccuranceDate: "2015-06-01",
         },
         {
-          conditionId: "cond3",
+
           diseaseName: "Asthma",
           description: "Respiratory condition",
           severity: "Low",
@@ -94,14 +94,14 @@ const familyMedicalHistory = {
       relation: "Father",
       disease: [
         {
-          conditionId: "cond4",
+
           diseaseName: "Cardiovascular Disease",
           description: "Cardiovascular condition",
           severity: "High",
           firstOccuranceDate: "2000-01-20",
         },
         {
-          conditionId: "cond5",
+
           diseaseName: "Arthritis",
           description: "Joint inflammation",
           severity: "Medium",
@@ -114,14 +114,14 @@ const familyMedicalHistory = {
       relation: "Mother",
       disease: [
         {
-          conditionId: "cond6",
+
           diseaseName: "Osteoporosis",
           description: "Bone density loss",
           severity: "Medium",
           firstOccuranceDate: "2018-07-22",
         },
         {
-          conditionId: "cond7",
+
           diseaseName: "Thyroid Disorder",
           description: "Thyroid gland issues",
           severity: "Low",
