@@ -8,7 +8,7 @@ import { OfferPayload } from "@/types/types";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-const credentialData = {
+const bpAggregateData = {
   vitalAggregateID: "123456",
   aggregationDate: "2024-12-09",
   measurementType: "Blood Pressure",
@@ -56,7 +56,83 @@ const credentialData = {
   bpSys360DayAvg: 121.0,
   bpDia360DayAvg: 81.0,
 };
-
+const familyMedicalHistory = {
+  patient: {
+    userId: "user123",
+    name: "John Doe",
+    gender: "Male",
+    email: "john.doe@example.com",
+    phone: "1234567890",
+  },
+  familyMembers: [
+    {
+      name: "Jane Doe",
+      relation: "Spouse",
+      conditions: [
+        {
+          conditionId: "cond2",
+          name: "Diabetes",
+          description: "High blood sugar levels",
+          severity: "Medium",
+          firstOccuranceDate: "2015-06-01",
+        },
+        {
+          conditionId: "cond3",
+          name: "Asthma",
+          description: "Respiratory condition",
+          severity: "Low",
+          firstOccuranceDate: "2010-09-15",
+        },
+      ],
+    },
+    {
+      name: "Michael Doe",
+      relation: "Father",
+      conditions: [
+        {
+          conditionId: "cond4",
+          name: "Heart Disease",
+          description: "Cardiovascular condition",
+          severity: "High",
+          firstOccuranceDate: "2000-01-20",
+        },
+        {
+          conditionId: "cond5",
+          name: "Arthritis",
+          description: "Joint inflammation",
+          severity: "Medium",
+          firstOccuranceDate: "2012-03-10",
+        },
+      ],
+    },
+    {
+      name: "Sarah Doe",
+      relation: "Mother",
+      conditions: [
+        {
+          conditionId: "cond6",
+          name: "Osteoporosis",
+          description: "Bone density loss",
+          severity: "Medium",
+          firstOccuranceDate: "2018-07-22",
+        },
+        {
+          conditionId: "cond7",
+          name: "Thyroid Disorder",
+          description: "Thyroid gland issues",
+          severity: "Low",
+          firstOccuranceDate: "2011-11-05",
+        },
+      ],
+    },
+  ],
+};
+const labReportData = {
+  patient: {
+    userId: "user123",
+    name: "John Doe", 
+  }
+}
 const Issuance = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [vaultLink, setVaultLink] = useState("");
@@ -79,7 +155,7 @@ const Issuance = () => {
     const response = await fetch("/api/issuance/start", {
       method: "POST",
       body: JSON.stringify({
-        credentialData,
+        bpAggregateData,
         credentialTypeId: "AHC Vitals Aggregate",
         claimMode: StartIssuanceInputClaimModeEnum.TxCode,
       }),
@@ -117,9 +193,28 @@ const Issuance = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex-1 space-y-12"
             >
-              <SubmitButton isLoading={isLoading}>
+              <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+              <div className="flex-1">
+                <SubmitButton isLoading={isLoading}>
                 Issue Aggregate Vital VC
-              </SubmitButton>
+                </SubmitButton>
+                <pre>{JSON.stringify(bpAggregateData, null, 2)}</pre>
+              </div>
+
+              <div className="flex-1">
+                <SubmitButton isLoading={isLoading}>
+                Issue Family Medical History VC
+                </SubmitButton>
+                <pre>{JSON.stringify(familyMedicalHistory, null, 2)}</pre>
+              </div>
+
+              <div className="flex-1">
+                <SubmitButton isLoading={isLoading}>
+                Issue Lab Report VC
+                </SubmitButton>
+                <pre>{JSON.stringify(labReportData, null, 2)}</pre>
+              </div>
+              </div>
             </form>
           )}
 
