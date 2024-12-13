@@ -127,8 +127,8 @@ const Issuance = () => {
             <>
               <h2 className="header mb-6 max-w-[600px] text-center">
                 Your{" "}
-                <span className="text-green-500">Health Vitals Credential</span>
-                has been issuance successfully! Click to Claim it.
+                <span className="text-green-500">Health Vitals Credential </span>
+                has been issued successfully! <br/> Click link or button to Claim it.
               </h2>
               <section className="request-details">
                 <p>Offer URL:</p>
