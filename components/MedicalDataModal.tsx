@@ -46,7 +46,7 @@ export const MedicalDataModal = ({
           📁
         </Button>
       </DialogTrigger>
-      <DialogContent className="shad-dialog sm:max-w-6xl">
+      <DialogContent className="shad-dialog sm:max-w-6xl max-h-[700px] overflow-auto">
         <DialogHeader className="mb-4 space-y-3">
           <DialogTitle className="capitalize">{appointment?.patient.name} 's Pre submitted data for Appointment</DialogTitle>
           <DialogDescription>
@@ -115,7 +115,7 @@ export const MedicalDataModal = ({
                             <tbody className="bg-white divide-y divide-gray-300">
                               {/* BP Systolic */}
                               <tr>
-                                <td className="px-4 py-2 font-medium text-gray-700">BP Sys</td>
+                                <td className="px-4 py-2 font-medium text-gray-700">BP Sys ( {aggregateVitaData?.bpSysUom})</td>
                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.bpSys1DayAvg}</td>
                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.bpSys7DayAvg}</td>
                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.bpSys30DayAvg}</td>
@@ -126,7 +126,7 @@ export const MedicalDataModal = ({
 
                               {/* BP Diastolic */}
                               <tr>
-                                <td className="px-4 py-2 font-medium text-gray-700">BP Dia</td>
+                                <td className="px-4 py-2 font-medium text-gray-700">BP Dia  ( {aggregateVitaData?.bpDiaUom})</td>
                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.bpDia1DayAvg}</td>
                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.bpDia7DayAvg}</td>
                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.bpDia30DayAvg}</td>
@@ -142,24 +142,27 @@ export const MedicalDataModal = ({
                                 <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.bpDia1DayTrend || "-"}</td>
                               </tr>
 
-                              {/* Weight and BMI */}
+                                {/* Weight and BMI */}
+                                <tr>
+                                <td colSpan="7" className="px-4 py-2 bg-gray-200"></td>
+                                </tr>
                               <tr>
                                 <td className="px-4 py-2 font-medium text-gray-700">Weight (lbs)</td>
-                                <td colSpan="6">{aggregateVitaData?.weightDailyAvgLbs}</td>
+                                <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.weightDailyAvgLbs}</td>
                               </tr>
                               <tr>
                                 <td className="px-4 py-2 font-medium text-gray-700">BMI</td>
-                                <td colSpan="6">{aggregateVitaData?.currBmiValue}</td>
+                                <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.currBmiValue}</td>
                               </tr>
 
                               {/* Misc */}
                               <tr>
-                                <td className="px-4 py-2 font-medium text-gray-700">Measurement Type</td>
-                                <td colSpan="6">{aggregateVitaData?.measurementType}</td>
+                                <td className="px-4 py-2 font-medium text-gray-700">Measured at :</td>
+                                <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.organizationId}</td>
                               </tr>
                               <tr>
                                 <td className="px-4 py-2 font-medium text-gray-700">Aggregation Date</td>
-                                <td colSpan="6">
+                                <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">
                                   {new Date(aggregateVitaData?.aggregationDate).toLocaleDateString()}
                                 </td>
                               </tr>
