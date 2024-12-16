@@ -82,10 +82,7 @@ export const VCNameValidation = z.object({
 export const CreateAppointmentSchema = z.object({
   primaryPhysician: z.string().min(2, "Select at least one doctor"),
   schedule: z.coerce.date(),
-  // reason: z
-  //   .string()
-  //   .min(2, "Reason must be at least 2 characters")
-  //   .max(500, "Reason must be at most 500 characters"),
+  reason: z.string().optional(),
   note: z.string().optional(),
   cancellationReason: z.string().optional(),
 });
@@ -103,10 +100,7 @@ export const CancelAppointmentSchema = z.object({
   schedule: z.coerce.date(),
   reason: z.string().optional(),
   note: z.string().optional(),
-  cancellationReason: z
-    .string()
-    .min(2, "Reason must be at least 2 characters")
-    .max(500, "Reason must be at most 500 characters"),
+  cancellationReason: z.string().optional(),
 });
 
 export function getAppointmentSchema(type: string) {

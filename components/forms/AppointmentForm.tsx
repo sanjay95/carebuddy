@@ -88,7 +88,7 @@ const AppointmentForm = ({
             `/patients//new-appointment/success?appointmentId=${appointment.$id}`
           );
         }
-      } else {
+      } else if (userId) {
         const appointmentToUpdate = {
           userId,
           appointmentId: appointment?.$id!,

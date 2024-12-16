@@ -64,7 +64,7 @@ const labelClass = healthVitalData
   useEffect(() => {
     if (healthVitalData) {
       setSelectedDepartment("Cardiology");
-      const allergies = healthVitalData.currentConditions
+      const currentConditions = healthVitalData.currentConditions
         .map((condition: { description: string }) => condition.description)
         .join(", ");
       const latestVital = `       Latest of: ${healthVitalData.aggregationDate}      | from: ${healthVitalData.organizationId}
@@ -91,12 +91,11 @@ const labelClass = healthVitalData
         name: healthVitalData.user.name,
         phone: healthVitalData.user.phone,
         gender: healthVitalData.user.gender,
-        allergies: allergies,
+        allergies: currentConditions,
         currentMedication: latestVital,
         familyMedicalHistory: familyHistory,
       });
     }
-    console.log("** healthVitalData **", healthVitalData);
   }, [healthVitalData]);
 
   const handlePersonalInformationFetch = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -124,6 +123,7 @@ const labelClass = healthVitalData
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setIsLoading(true);
     console.log("onSubmit called")
+    console.log(" healthVitalData.familyHistory",  JSON.stringify(healthVitalData?.familyHistory, null, 2));
     let formData;
     try {
       const patient = {
@@ -140,9 +140,9 @@ const labelClass = healthVitalData
         primaryPhysician: values.primaryPhysician,
         insuranceProvider: "",
         insurancePolicyNumber: "",
-        allergies: "",
-        currentMedication: "",
-        familyMedicalHistory: "",
+        allergies: values.allergies,
+        currentMedication: healthVitalData ? JSON.stringify({ ...healthVitalData, familyHistory: undefined }, null, 2) : "",
+        familyMedicalHistory: healthVitalData ? JSON.stringify(healthVitalData?.familyHistory, null, 2) : "",
         pastMedicalHistory: "",
         identificationType: "",
         identificationNumber: "",
