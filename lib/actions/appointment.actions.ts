@@ -86,9 +86,6 @@ export const getRecentAppointmentList = async () => {
       },
       initialCounts
     );
-
-    // const tempappointments = appointments.documents as Appointment[];
-     console.log("appointments", appointments);
     await Promise.all(
       appointments.documents.map(async (appointment) => {
         const patientResponse = await databases.getDocument(

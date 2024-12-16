@@ -7,6 +7,7 @@ import { Doctors } from "@/constants";
 import Image from "next/image";
 import { AppointmentModal } from "../AppointmentModal";
 import { Appointment } from "@/types/appwrite.types";
+import { MedicalDataModal } from "../MedicalDataModal";
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -26,7 +27,11 @@ export const columns: ColumnDef<Appointment>[] = [
     header: "Data",
     cell: ({ row }) => {
       const appointment = row.original;
-      return <p className="text-14-medium"> 📁 </p>;
+      return (
+        <div className="flex gap-1">
+          {appointment.patient.currentMedication || appointment.patient.familyMedicalHistory ? <MedicalDataModal appointment={appointment} /> : ""}
+        </div>
+      );
     },
   },
   {
