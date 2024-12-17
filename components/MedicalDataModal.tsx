@@ -28,9 +28,8 @@ export const MedicalDataModal = ({
   useEffect(() => {
     if (appointment?.patient?.currentMedication) {
       try {
-        console.log("Raw currentMedication data:", aggregateVitaData);
+        console.log("appointment:", appointment);
         setAggregateVitaData(JSON.parse(appointment.patient.currentMedication));
-        console.log("Parsed currentMedication data:", aggregateVitaData?.bpSys1DayAvg);
       } catch (error) {
         console.error("Failed to parse currentMedication data:", error);
       }
@@ -148,24 +147,23 @@ export const MedicalDataModal = ({
                                 </tr>
                               <tr>
                                 <td className="px-4 py-2 font-medium text-gray-700">Weight (lbs)</td>
-                                <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.weightDailyAvgLbs}</td>
-                              </tr>
-                              <tr>
+                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.weightDailyAvgLbs}</td>
+                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700"></td>
                                 <td className="px-4 py-2 font-medium text-gray-700">BMI</td>
                                 <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.currBmiValue}</td>
                               </tr>
-
+                             
                               {/* Misc */}
                               <tr>
                                 <td className="px-4 py-2 font-medium text-gray-700">Measured at :</td>
-                                <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.organizationId}</td>
-                              </tr>
-                              <tr>
+                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">{aggregateVitaData?.organizationId}</td>
+                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-700"></td>
                                 <td className="px-4 py-2 font-medium text-gray-700">Aggregation Date</td>
                                 <td colSpan="6" className="px-6 py-4 whitespace-normal text-sm text-gray-700">
                                   {new Date(aggregateVitaData?.aggregationDate).toLocaleDateString()}
                                 </td>
                               </tr>
+                             
                             </tbody>
                           </table>
                         </div>
