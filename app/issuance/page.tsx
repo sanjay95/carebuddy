@@ -21,7 +21,7 @@ const bpAggregateData = {
     name: "John Doe",
     gender: "Male",
     email: "john.doe@example.com",
-    phone: "1234567890",
+    phone: "+91789017890",
     heightInch: "72",
     emergencyContacts: [
       {
@@ -65,7 +65,7 @@ const familyMedicalHistory = {
     name: "John Doe",
     gender: "Male",
     email: "john.doe@example.com",
-    phone: "1234567890",
+    phone: "+91789017890",
   },
   aggregationDate: "2024-12-09",
   familyHistory: [
