@@ -43,8 +43,8 @@ const RegisterForm = ({ user }: { user: User }) => {
   const [selectedDepartment, setSelectedDepartment] = useState("")
 
   const label = healthVitalData
-  ? "We have selected department for you based on your health data. Feel free to change it."
-  : "Select Department & Physician";
+  ? "We have selected medical department for you based on your health data. Feel free to change it."
+  : "Select Field of Care";
 
 const labelClass = healthVitalData
   ? "text-green-500 font-semibold"
@@ -297,7 +297,7 @@ const labelClass = healthVitalData
           name="primaryPhysician"
           label={label}
           labelClass={labelClass}
-          placeholder="Department & Physician"
+          placeholder="Departments"
           value={selectedDepartment}
           onValueChange={setSelectedDepartment} // Handle change
         >
@@ -311,7 +311,7 @@ const labelClass = healthVitalData
                   alt="department"
                   className="rounded-full border border-dark-500 bg-white"
                 />
-                <p> <strong> {department.name}  </strong> {'     ( ' + department.doctors + ' )'}</p>
+                <p> <strong> {department.name}  </strong> </p>
               </div>
             </SelectItem>
           ))}
