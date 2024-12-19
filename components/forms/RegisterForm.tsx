@@ -65,7 +65,7 @@ const labelClass = healthVitalData
     if (healthVitalData) {
       setSelectedDepartment("Cardiology");
       const currentConditions = healthVitalData.currentConditions
-        .map((condition: { description: string }) => condition.description)
+        ?.map((condition: { description: string }) => condition?.description)
         .join(", ");
       const latestVital = `       Latest of: ${healthVitalData.aggregationDate}      | from: ${healthVitalData.organizationId}
                     BMI: ${healthVitalData.currBmiValue}          Weight Daily Avg (lbs): ${healthVitalData.weightDailyAvgLbs}
